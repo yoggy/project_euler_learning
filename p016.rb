@@ -8,5 +8,6 @@ total = 0
   total += n - '0'[0]
 }
 
+
 # 結果の出力
 puts "result = #{total}"
