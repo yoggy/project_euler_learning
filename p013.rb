@@ -111,5 +111,4 @@ str.each_line{|l|
   total += l.to_i
 }
 
-# 結果の出力
 puts "result = #{total.to_s[0,10]}"
