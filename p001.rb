@@ -9,4 +9,6 @@ total = 0
     total += n
   end
 }
+
+
 puts "total = #{total}"
