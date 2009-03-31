@@ -10,5 +10,4 @@ total = 0
   end
 }
 
-
 puts "total = #{total}"
