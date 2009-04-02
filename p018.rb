@@ -2,7 +2,7 @@
 require 'pe'
 desc "次の三角形で最大になるルートの合計は？"
 
-str = <<-EOS
+$str = <<-EOS
               75
              95 64
             17 47 82
@@ -19,6 +19,28 @@ str = <<-EOS
  63 66 04 68 89 53 67 30 73 16 69 87 40 31
 04 62 98 27 23 09 70 98 73 93 38 53 60 04 23
 EOS
+
+
+class Tree
+  def initialize
+    @tree = []
+    $str.each{|l|
+      @tree << l.split(/\s+/).inject([]) {|r,i| i.size > 0 ? r << i : r}
+    }
+    pp @tree
+  end
+
+  def width(y)
+    @tree[y].size
+  end
+  
+  def height
+    @tree.size
+  end
+end
+
+# 
+t = Tree.new
 
 
 # 結果の出力
