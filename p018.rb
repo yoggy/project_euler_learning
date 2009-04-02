@@ -60,7 +60,7 @@ class Tree
     2 ** (height-1)
   end
 
-  def max_comb_sum
+  def max_sum
     # とりあえずいい方法が思いつかないので、総当たりでw
     (0...comb_num).inject(-1) {|m, i|
       s = sum(i)
@@ -71,5 +71,5 @@ end
 
 # 結果の出力
 t = Tree.new
-puts "result = #{t.max_comb_sum}"
+puts "result = #{t.max_sum}"
 
