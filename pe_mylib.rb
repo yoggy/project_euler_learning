@@ -55,28 +55,24 @@ end
 # 適当に拡張 
 class Integer 
   # 約数を求める 
-  unless self.methods.include?("divisors") 
-    def divisors 
-      return [1] if self == 1 
-      p = self.prime_division 
-      p2 = p.map{|v| 
-        a = [] 
-        (0..v[1]).each {|i| 
-          a << v[0] ** i   
-        } 
-        a 
-      }  
-      return p2.flatten if p2.size == 1 
-      p3 = p2.inject{|r, v| r.product(v)}.map{|v| v.flatten} 
-      p3.map{|v| v.inject{|r,v|r*v}}.sort 
-    end 
+  def divisors 
+    return [1] if self == 1 
+    p = self.prime_division 
+    p2 = p.map{|v| 
+      a = [] 
+      (0..v[1]).each {|i| 
+        a << v[0] ** i   
+      } 
+      a 
+    }  
+    return p2.flatten if p2.size == 1 
+    p3 = p2.inject{|r, v| r.product(v)}.map{|v| v.flatten} 
+    p3.map{|v| v.inject{|r,v|r*v}}.sort 
   end 
  
-  unless self.methods.include?("proper_divisors") 
-    def proper_divisors 
-      d = divisors(n) 
-      d.pop if d.size > 1 
-      d 
-    end 
+  def proper_divisors
+    d = divisors 
+    d.pop if d.size > 1 
+    d 
   end 
 end 
