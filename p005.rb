@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'pe'
+require 'pe_mylib'
 desc "1から20で割り切れる数の中で一番小さい数は？"
 
 # ステップ数を大きくして高速にする作戦。。

@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'pe'
+require 'pe_mylib'
 desc "1から1000までの数をアルファベットで記述すると何文字になる？"
 
 # 数字テーブル

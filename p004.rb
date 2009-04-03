@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'pe'
+require 'pe_mylib'
 desc "3桁の数を掛け合わせてできるpalindromic number(回文になっている数)の中で一番大きな数は？"
 
 p_num = 0;

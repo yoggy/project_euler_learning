@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'pe'
+require 'pe_mylib'
 desc "10001番目の素数は何？"
 
 # mathnモジュールのPrimeクラスを使うと楽勝w

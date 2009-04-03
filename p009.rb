@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'pe'
+require 'pe_mylib'
 desc "a**2 + b**2 = c**2, a + b + c = 1000, a < b < cを満たすabcの積は？"
 
 (1..1000).each{|a|

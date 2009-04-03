@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'pe'
+require 'pe_mylib'
 desc "1901/1/1から2000/12/31の間に月の始まりが日曜日は何日ある？1900/1/1は月曜日はじまり。"
 
 require 'date'

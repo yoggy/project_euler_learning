@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'pe'
+require 'pe_mylib'
 desc "2*1000を求め、各桁の数値を合計した値は？"
 
 total = 0

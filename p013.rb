@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'pe'
+require 'pe_mylib'
 desc "以下の50桁の数字の合計の上位10桁は？"
 
 # ここ以下にプログラム書く

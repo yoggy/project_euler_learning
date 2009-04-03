@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'pe'
+require 'pe_mylib'
 desc "ファイルにある名前の名前スコアの合計は？"
 
 # 名前1件あたりの名前スコアとは、文字スコアと順番スコアを掛け合わせたもの。

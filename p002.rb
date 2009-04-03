@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'pe'
+require 'pe_mylib'
 desc "フィボナッチ数列のうち、400万までの数＆偶数の数の合計は？"
 
 # ループでフィボナッチ数列を求めて高速化する作戦

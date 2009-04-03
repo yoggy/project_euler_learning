@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'pe'
+require 'pe_mylib'
 desc "200万未満の素数の合計はいくつ？"
 
 # ここ以下にプログラム書く

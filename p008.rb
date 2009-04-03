@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'pe'
+require 'pe_mylib'
 desc "下記の1000文字から5つ連続する数を取り出して求めた積のうち、一番大きな積は？"
 
 require 'pp'

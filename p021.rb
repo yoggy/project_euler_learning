@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'pe'
+require 'pe_mylib'
 desc "10000未満の友愛数の和は？"
 
 n = 10000

@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'pe'
+require 'pe_mylib'
 desc "100万以下の数字からはじめるコラッツ数列のなかで一番長いものは？"
 
 $dist = {}

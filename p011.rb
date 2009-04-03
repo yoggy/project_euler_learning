@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'pe'
+require 'pe_mylib'
 desc "縦横斜めから連続した4つの数を取り出した積のうち、いちばん大きな積は？"
 
 table_str = <<-EOS

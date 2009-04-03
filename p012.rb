@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'pe'
+require 'pe_mylib'
 desc "最初に約数が500を超えるtriangle numberは？"
 
 # ここ以下にプログラム書く

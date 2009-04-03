@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'pe'
+require 'pe_mylib'
 desc "次の三角形で最大になるルートの合計は？"
 
 $str = <<-EOS
