@@ -120,7 +120,6 @@ end
 # 適当に拡張
 class Integer
   # 約数を求める
-  pp self
   unless self.methods.include?("divisor")
     def divisor
       return [1] if self == 1
