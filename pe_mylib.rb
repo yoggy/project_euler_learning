@@ -1,6 +1,9 @@
 # 問題で使いそうなパッケージを書いておく
 require 'mathn'
 require 'pp'
+require 'yaml'
+require 'yaml/store'
+require 'proc_source'
 
 # 以下、問題を解くときに使いそうな機能とか
  
@@ -75,4 +78,53 @@ class Integer
     d.pop if d.size > 1 
     d 
   end 
+
+  def proper_divisors_sum
+    proper_divisors.inject {|r,n| r + n}
+  end 
 end 
+
+# キャッシュがあればそこから値を取り出し、
+# なければ渡されたブロックを評価しキャッシュに格納する
+def cache_calc(key, use_cache=true, &block)
+  cache_file = ".cache." + key
+
+  # デバッグ用
+  File.unlink(cache_file) if !use_cache && File.exists?(cache_file)
+
+  # キャッシュから前に実行したときのブロックのソースコードを取り出し
+  db = YAML::Store.new(cache_file)
+  src = ""
+  db.transaction {
+    src = db['source']
+  }
+
+  # 空白を詰めて入力ブロックのソースコードを簡単に正規化(?)する
+  pseudo_normalize_source = ""
+  block.source.each{|l|
+    l.strip!
+    l.gsub!(/[\t]+/, " ")
+    l.gsub!(/[\s]+/, " ")
+    next if l =~ /^\s*$/
+    pseudo_normalize_source += l + "\n"
+  }
+  pseudo_normalize_source.gsub(/^;+(.*)$/,"").gsub(/^(.*);+$/,"")
+
+  # 渡されたブロックとキャッシュのブロックを比較。異なった場合はブロックを評価
+  if src != pseudo_normalize_source
+    rv = yield
+    db.transaction {
+      db['result'] = rv
+      db['source'] = pseudo_normalize_source
+    }
+  end
+
+  # キャッシュから値取り出し
+  rv = nil
+  db = YAML::Store.new(cache_file)
+  db.transaction {
+    rv = db['result']
+  }
+  rv
+end
+

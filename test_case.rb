@@ -17,5 +17,19 @@ class MyTestCase < Test::Unit::TestCase
     assert_equal([1,2,3],      6.proper_divisors)
     assert_equal([1,2,3,4,6], 12.proper_divisors)
   end
+  
+  def test_cache_calc
+    rv = (1..100).inject([]) {|r, n| r << n ** n}
+    rv_nocache = cache_calc("test", false) {
+      rv
+    }
+    rv_cache = cache_calc("test") {
+      rv + rv + rv
+      rv + rv
+      rv
+    }
+    assert_equal(rv, rv_nocache)
+    assert_equal(rv, rv_nocache)
+  end
 end
 
