@@ -31,5 +31,14 @@ class MyTestCase < Test::Unit::TestCase
     assert_equal(rv, rv_nocache)
     assert_equal(rv, rv_nocache)
   end
+
+  def test_prime?
+    assert_equal(true,  2.prime?)
+    assert_equal(true,  3.prime?)
+    assert_equal(false, 4.prime?)
+    assert_equal(true,  5.prime?)
+    assert_equal(false, 10.prime?)
+    assert_equal(true, 97.prime?)
+  end
 end
 

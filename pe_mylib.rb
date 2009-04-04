@@ -84,6 +84,12 @@ class Integer
   def proper_divisors_sum
     proper_divisors.inject {|r,n| r + n}
   end 
+
+  def prime?
+    v = self.prime_division
+    return true if v.size == 1 && v[0][1] == 1
+    false
+  end
 end 
 
 # キャッシュがあればそこから値を取り出し、
