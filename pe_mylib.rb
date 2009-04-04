@@ -92,6 +92,20 @@ class Integer
   end
 end 
 
+class Array
+  def sum
+    self.inject {|r, n|
+      r + n
+    }
+  end
+
+  def mult
+    self.inject {|r, n|
+      r * n
+    }
+  end
+end
+
 # キャッシュがあればそこから値を取り出し、
 # なければ渡されたブロックを評価しキャッシュに格納する
 def cache_calc(key, use_cache=true, &block)

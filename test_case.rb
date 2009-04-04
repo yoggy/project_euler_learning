@@ -40,5 +40,15 @@ class MyTestCase < Test::Unit::TestCase
     assert_equal(false, 10.prime?)
     assert_equal(true, 97.prime?)
   end
+
+  def test_sum
+    assert_equal(1+2+3+4+5, [1,2,3,4,5].sum)
+    assert_equal(1+2+3+4+5+6+7+8+9+10, [1,2,3,4,5,6,7,8,9,10].sum)
+  end
+
+  def test_multi
+    assert_equal(1*2*3*4*5, [1,2,3,4,5].mult)
+    assert_equal(1*2*3*4*5*6*7*8*9*10, [1,2,3,4,5,6,7,8,9,10].mult)
+  end
 end
 
