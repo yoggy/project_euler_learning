@@ -8,11 +8,17 @@ desc "ここに問題文を書く"
 #   ary 数字を入れた配列
 #   pos どこで区切るか？の位置を示す配列
 #       0番目は*を入れる位置。1番目は=を入れる位置
-def check(ary, pos)
+def calc(ary, pos, debug=false)
   a = ary[0,pos[0]].join.to_i
   b = ary[pos[0], pos[1]-pos[0]].join.to_i
+
+  puts "#{a} * #{b} = #{a*b}" if debug
+  return a * b
+end
+
+def check(ary, pos)
   c = ary[pos[1], ary.size-pos[1]].join.to_i
-  return true if a * b == c
+  return true if calc(ary, pos) == c
   false
 end
 
@@ -58,6 +64,22 @@ tmp_comb.each {|p|
 #pp pos_comb
 #pp len_comb
 
-# 結果の出力
-rv = "not implemented..."
-puts "result = #{rv}"
+match_comb = []
+
+nums.choice_and_call {|a|
+  pos_comb.each {|p|
+    if check(a, p)
+      puts "hit! : #{a.pretty_inspect.chomp} #{p.pretty_inspect.chomp}"
+      match_comb << [a,p]
+    end
+  }
+}
+
+# 積が同じになるものがあるので、重複を避ける
+rv = []
+match_comb.inject(0) {|r, a|
+  c =  calc(a[0], a[1], true)
+  rv << c unless rv.include?(c)
+}
+
+puts "result = #{rv.sum}"
