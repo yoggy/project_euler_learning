@@ -50,5 +50,23 @@ class MyTestCase < Test::Unit::TestCase
     assert_equal(1*2*3*4*5, [1,2,3,4,5].mult)
     assert_equal(1*2*3*4*5*6*7*8*9*10, [1,2,3,4,5,6,7,8,9,10].mult)
   end
+
+  def test_each_digit
+    n = 12345
+    total = 0
+    n.each_digit {|d|
+      total += d
+    }
+    assert_equal(1+2+3+4+5, total)
+  end
+ 
+  def test_each_char
+    src = "12345"
+    dst = ""
+    src.each_char{|c|
+      dst += c
+    }
+    assert_equal(src, dst)
+  end
 end
 

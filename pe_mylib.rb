@@ -90,7 +90,23 @@ class Integer
     return true if v.size == 1 && v[0][1] == 1
     false
   end
+
+  def each_digit(&block)
+    self.to_s.each_byte{|b|
+      d = b - '0'[0]
+      yield d
+    }
+  end
 end 
+
+class String
+  def each_char(&block)
+    self.each_byte {|b|
+      c = b.chr()
+      yield c
+    }
+  end
+end
 
 class Array
   def sum
