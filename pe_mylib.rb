@@ -23,7 +23,7 @@ module Kernel
   RE_THE_DATA  = /^__DATA\d+__/
 
   def __data__(num="")
-    data = File.read(__FILE__).split(RE_THIS_DATA.call(num))
+    data = File.read($0).split(RE_THIS_DATA.call(num))
     data[1].split(RE_THE_DATA)[0] if data[1]
   end
 end
