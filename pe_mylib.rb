@@ -5,6 +5,8 @@ require 'yaml'
 require 'yaml/store'
 require 'proc_source'
 
+include Math
+
 # 以下、問題を解くときに使いそうな機能とか
  
 # Project Eulerの問題とURLを表示する関数。問題数はプログラム名"p問題数3桁.rb"から取得する
