@@ -120,6 +120,27 @@ class Array
       r * n
     }
   end
+
+  # pathは選んだパス、lenはあといくつ選ぶか？、blockはlen=0の時に実行するブロック
+  protected
+  def _choice_and_call(path, len, &block)
+    if len == 0
+      block.call(path)
+      return
+    end
+
+    self.each_with_index{|v, i|
+      a = self.dup
+      a.delete_at(i)
+      a._choice_and_call(path + [v], len - 1, &block)
+    }
+  end
+
+  # 順番ありの組み合わせ＆ブロック実行するメソッド
+  public
+  def choice_and_call(len=self.size, &block)
+    _choice_and_call([], len, &block)
+  end
 end
 
 # キャッシュがあればそこから値を取り出し、

@@ -32,13 +32,13 @@ tmp_comb.each {|p|
   a = p[0]
   b = p[1] - p[0]
   c = nums.size - p[1] 
-  puts "#{a} #{b} #{c}"
+  #puts "#{a} #{b} #{c}"
 
   # あり得ない組み合わせの場合は除去する
   # 1桁 * 1桁 = 7桁 とかはあり得ないので...
   # 2桁 * 3桁の場合、4桁もしくは5桁なら正しい
   if a + b == c || a + b - 1 == c
-    puts "hit #{a} #{b} #{c}"
+    #puts "hit #{a} #{b} #{c}"
     
     # 次に、a,bの長さが以前登場したものなら列挙しない
     flag = true
@@ -55,8 +55,8 @@ tmp_comb.each {|p|
   end
 }
 
-pp pos_comb
-pp len_comb
+#pp pos_comb
+#pp len_comb
 
 # 結果の出力
 rv = "not implemented..."

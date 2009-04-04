@@ -68,5 +68,14 @@ class MyTestCase < Test::Unit::TestCase
     }
     assert_equal(src, dst)
   end
+
+  def test_choice_and_call
+    src = [1,2,3]
+    dst = []
+    src.choice_and_call {|a|
+      dst << a
+    }
+    assert_equal([[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]], dst)
+  end
 end
 
