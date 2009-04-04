@@ -64,7 +64,7 @@ end
 __END__
 __DATA__
 #!/usr/bin/ruby
-require 'pe'
+require 'pe_mylib'
 desc "ここに問題文を書く"
 
 # ここ以下にプログラム書く
