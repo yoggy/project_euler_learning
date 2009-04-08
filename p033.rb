@@ -63,21 +63,28 @@ def check2(a,b,c)
   false
 end
 
+rv = []
 #
 [1,2,3,4,5,6,7,8,9].combination(2).each{|e|
   a = e[0]
   b = e[1]
   (1..9).each {|c|
-     puts "a=#{a} b=#{b} c = #{c}"
-     c1 = check1(a,b,c)
-     puts "hit! 1" if c1 == true
+     #puts "a=#{a} b=#{b} c = #{c}"
+     if check1(a,b,c)
+       puts "hit! (type 1)" 
+       r = Rational(a*10+c,c*10+b)
+       rv << r
+       puts "a=#{a} b=#{b} c = #{c}, #{a}#{c}/#{c}#{b} => #{r}"
+     end
 
-     c2 = check2(a,b,c)
-     puts "hit! 2" if c2 == true
+     if check2(a,b,c)
+       puts "hit! (type 2)" 
+       r = Rational(c*10+a,b*10+c)
+       rv << r
+       puts "a=#{a} b=#{b} c = #{c}, #{c}#{a}/#{b}#{c} => #{r}"
+     end
   }
 }
 
-pp check1(1,2,3)
-
 # 
-puts "result = #{true}"
+puts "result = #{rv.mult.denominator}"
