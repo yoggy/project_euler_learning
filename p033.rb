@@ -29,7 +29,55 @@ desc ""
 #
 #   (4) 最後に求めた分数を約分した形で、積を求め、その分母が答え
 #
+#
+#   49/48 -> 4/8
+#
 
-# 結果の出力
-rv = "not implemented..."
-puts "result = #{rv}"
+def check1(a,b,c)
+  nm  = a * 10 + c
+  dnm = c * 10 + b
+  org = Rational(nm,dnm)
+
+  nm  = a
+  dnm = b
+
+  tmp = Rational(nm,dnm)
+
+  return true if tmp == org && org >= tmp
+
+  false
+end
+
+def check2(a,b,c)
+  nm  = c * 10 + a
+  dnm = b * 10 + c
+  org = Rational(nm,dnm)
+
+  nm  = a
+  dnm = b
+
+  tmp = Rational(nm,dnm)
+
+  return true if tmp == org && org >= tmp
+
+  false
+end
+
+#
+[1,2,3,4,5,6,7,8,9].combination(2).each{|e|
+  a = e[0]
+  b = e[1]
+  (1..9).each {|c|
+     puts "a=#{a} b=#{b} c = #{c}"
+     c1 = check1(a,b,c)
+     puts "hit! 1" if c1 == true
+
+     c2 = check2(a,b,c)
+     puts "hit! 2" if c2 == true
+  }
+}
+
+pp check1(1,2,3)
+
+# 
+puts "result = #{true}"
