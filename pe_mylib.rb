@@ -97,6 +97,14 @@ class Integer
       yield d
     }
   end
+
+  def fact
+    a = 1
+    (1..self).each{|i|
+      a *= i
+    }
+    a
+  end
 end 
 
 class String

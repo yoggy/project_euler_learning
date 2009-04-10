@@ -77,5 +77,11 @@ class MyTestCase < Test::Unit::TestCase
     }
     assert_equal([[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]], dst)
   end
+
+  def test_fact
+    assert_equal(1, 1.fact)
+    assert_equal(6, 3.fact)
+    assert_equal(3628800, 10.fact)
+  end
 end
 

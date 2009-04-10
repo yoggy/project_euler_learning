@@ -15,7 +15,23 @@ desc "各桁の階乗と自分自身の数が一致する数の総和は？"
 # 探索範囲はとりあえず、3〜2,540,160ぐらいをめどに考える。
 #
 
+def fact_sum(n)
+  a = []
+  n.to_s.each_char{|c|
+    a << c.to_i.fact
+  }
+  a.sum
+end
+
+puts fact_sum(145)
+
+total = 0
+(3..2_540_160).each {|i|
+  if i == fact_sum(i)
+    puts "hit!! i=#{i}"
+    total += i
+  end
+}
 
 # 結果の出力
-rv = "not implemented..."
-puts "result = #{rv}"
+puts "result = #{total}"
