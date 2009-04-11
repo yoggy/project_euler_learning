@@ -1,5 +1,7 @@
 #!/usr/bin/ruby
 require 'pe_mylib'
+require 'prime_table'
+
 desc "100万未満で巡回素数はいくつあるか？"
 
 # 巡回素数とは、桁を回転させて生成した数がいずれも素数である数のこと
@@ -40,6 +42,7 @@ loop {
   break if p >= max
   if check(p)
     puts "hit!! p=#{p}"
+    STDOUT.flush
     count += 1
   end
 }

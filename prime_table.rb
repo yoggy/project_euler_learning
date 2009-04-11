@@ -37,7 +37,7 @@ open($prime_table_cache_file, "r") {|f|
   end
 }
 
-class PrimeTable
+class Prime
   def initialize
     @pos = -1
   end
@@ -48,12 +48,3 @@ class PrimeTable
   end
 end
 
-
-p = Prime.new
-pt = PrimeTable.new
-
-1000.times{
-  if p.succ != pt.succ
-    puts "error!!!"
-  end
-}
