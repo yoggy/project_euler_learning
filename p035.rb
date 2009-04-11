@@ -7,24 +7,26 @@ desc "100万未満で巡回素数はいくつあるか？"
 
 # とりあえず100万未満の素数について総当たりするしか方法ないかなぁ...?
 
-def rotate(n)
-  # とりあえず整数のみ考える
-  a = n.to_s.unpack('c*')
-  return n if a.size <= 1
+def rotate(str)
+  return str if str.size <= 1
 
+  a = str.unpack('c*')
   x = a.shift
   a.push x
-  a.pack('c*').to_i
+  a.pack('c*')
 end
 
 
 # 巡回素数かどうかをチェックする関数
 def check(n)
   check = true
-  p = n
+  str = n.to_s
   n.to_s.size.times {
-    check = false unless p.prime?
-    p = rotate(p)
+    unless str.to_i.prime?
+      check = false
+      break
+    end
+    str = rotate(str)
   }
   check
 end

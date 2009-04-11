@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require 'test/unit'
 require 'pe_mylib'
+require 'prime_table'
 
 class MyTestCase < Test::Unit::TestCase
   def test_divisors
@@ -82,6 +83,15 @@ class MyTestCase < Test::Unit::TestCase
     assert_equal(1, 1.fact)
     assert_equal(6, 3.fact)
     assert_equal(3628800, 10.fact)
+  end
+
+  def test_prime_table
+    p = Prime.new
+    pt = PrimeTable.new
+
+    1000.times{
+      assert_equal(p.succ ,pt.succ)
+    }
   end
 end
 
