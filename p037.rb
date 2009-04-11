@@ -7,7 +7,29 @@ desc "自身が素数で右から順に切り詰めても、左から順に切�
 require 'prime_table'
 
 def check(n)
-  false
+  #puts "========================="
+  #puts n
+  return false unless n.prime? 
+
+  # 右を削る
+  a = n.to_a
+  (a.size-1).times {
+    a.pop
+    tmp = a.join.to_i
+    #puts tmp
+    return false unless tmp.prime? 
+  }
+
+  # 左側を削る
+  a = n.to_a
+  (a.size-1).times {
+    a.shift
+    tmp = a.join.to_i
+    #puts tmp
+    return false unless tmp.prime? 
+  }
+
+  true
 end
 
 # 
