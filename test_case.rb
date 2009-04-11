@@ -97,5 +97,20 @@ class MyTestCase < Test::Unit::TestCase
     }
     assert_equal(11003, p.succ)
   end
+
+  def test_digit
+    n = 1
+    assert_equal(1, n.digit)
+    n = 23
+    assert_equal(2, n.digit)
+    n = 345
+    assert_equal(3, n.digit)
+    n = 9999
+    assert_equal(4, n.digit)
+  end
+
+  def test_integer_to_a
+    assert_equal([1,2,3,4,5,6,7,8,9], 123456789.to_a)
+  end
 end
 

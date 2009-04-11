@@ -75,27 +75,45 @@ class Integer
     p3.map{|v| v.inject{|r,v|r*v}}.sort 
   end 
  
+  # 自身を除いた約数を求める
   def proper_divisors
     d = divisors 
     d.pop if d.size > 1 
     d 
   end 
 
+  # 自身を除いた約数の和
   def proper_divisors_sum
     proper_divisors.inject {|r,n| r + n}
   end 
 
+  # 素数かどうかの判定
   def prime?
     v = self.prime_division
     return true if v.size == 1 && v[0][1] == 1
     false
   end
 
-  def each_digit(&block)
+  # 各桁を分解してarrayに変換する
+  def to_a
+    a = []
     self.to_s.each_byte{|b|
       d = b - '0'[0]
+      a << d
+    }
+    a
+  end
+
+  # 各桁の数字をeachする
+  def each_digit(&block)
+    self.to_a.each {|d|
       yield d
     }
+  end
+
+  # 桁数を求める
+  def digit
+    log10(self).to_i + 1
   end
 
   def fact

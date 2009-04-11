@@ -7,33 +7,48 @@ desc "100万未満で10進数でも2進数でも回文になる数の総和は�
 # とりあえず回文になる10進数の数を作って、
 # それが2進数で回文になっているかどうかをチェックする？
 
-def check2(n)
+def check(n)
+  false
 end
 
-ns = %w(0 1 2 3 4 5 6 7 8 9)
-max_digit = 4
+pp check(1)   #1
+pp check(3)   #11
+pp check(9)   #1001
+pp check(585) #1001001001
 
-(1..max_digit).each{|d|
-  a = ns
-  half_d = (((d+1))/2).to_i - 1
-  half_d.times{a = a.product(ns)}
-  if half_d == 0
-    a = a.map{|p| [p]} 
-  else
-    a = a.map{|p| p.flatten} 
-  end
-  pp a
+__END__
 
-  if d%2 == 0
-    # ex.d = 4の場合
-    # ns[0] ns[1] ns[1] ns[0]の数を生成
+max_digit = 3
+total = 0
 
-  else
-    # ex.d = 5の場合
-    # ns[0] ns[1] ns[2] ns[1] ns[0]の数を生成
-  end
+(1..max_digit).each{|digit|
+  half_digit = (((digit+1))/2).to_i
+  puts "digit = #{digit}, half_digit=#{half_digit}"
+
+  min = 10**(half_digit-1) 
+  max = 10**(half_digit) - 1
+  puts "min=#{min}, max=#{max}"
+
+  (min..max).each{|hn|
+    hs = hn.to_s
+    numstr = ""
+    if digit == 1
+      num_str = hs
+    elsif digit % 2 == 0
+      # 偶数の場合の数字の作り方
+      num_str = hs + hs.reverse
+    else
+      # 奇数の場合の数字の作り方
+      num_str = hs + hs.reverse[1, hs.size-1] # 対称な文字列を作る
+    end
+    num = num_str.to_i
+
+    if check(num)
+      puts "hit!! #{num}"
+      total += 1
+    end
+  }
 }
 
 # 結果の出力
-rv = "not implemented..."
-puts "result = #{rv}"
+puts "result = #{total}"
