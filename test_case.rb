@@ -87,11 +87,15 @@ class MyTestCase < Test::Unit::TestCase
 
   def test_prime_table
     p = Prime.new
-    pt = PrimeTable.new
-
-    1000.times{
-      assert_equal(p.succ ,pt.succ)
+    100.times{
+      p.succ
     }
+    assert_equal(547, p.succ)
+
+    1234.times{
+      p.succ
+    }
+    assert_equal(11003, p.succ)
   end
 end
 
