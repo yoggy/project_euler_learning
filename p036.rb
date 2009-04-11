@@ -8,17 +8,30 @@ desc "100万未満で10進数でも2進数でも回文になる数の総和は�
 # それが2進数で回文になっているかどうかをチェックする？
 
 def check(n)
-  false
+  b = n.to_s(2)
+
+  # 1桁の場合
+  return true  if b == "1"
+  return false if b == "0"
+
+  flag = false
+  if b.size % 2 == 0
+    # 偶数桁
+    head = b[0,b.size/2]
+    tail = b[b.size/2, b.size/2].reverse
+    flag = true if head == tail
+  else
+    # 奇数桁は中心の数は見ない。両端だけ比較
+    size = (b.size-1)/2
+    head   = b[0,size]
+    tail   = b[size+1, size].reverse
+    flag = true if head == tail
+  end
+
+  flag
 end
 
-pp check(1)   #1
-pp check(3)   #11
-pp check(9)   #1001
-pp check(585) #1001001001
-
-__END__
-
-max_digit = 3
+max_digit = 6 #999999まで調べるので6桁
 total = 0
 
 (1..max_digit).each{|digit|
@@ -44,8 +57,8 @@ total = 0
     num = num_str.to_i
 
     if check(num)
-      puts "hit!! #{num}"
-      total += 1
+      puts "hit!! oct=#{num}, bin=#{num.to_s(2)}"
+      total += num
     end
   }
 }
