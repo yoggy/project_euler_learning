@@ -37,6 +37,9 @@ desc "直角三角形の辺の長さをa,b,cとし辺の周囲長(a+b+c)をpと�
 #      * 2n+1が平方数であればa=2n+1, b=sqrt(2n+1), c=n+1のピタゴラス数になる
 #        * この式はn**2 + 2n + 1を素因数分解した結果の(n+1)**2
 #    
+#    どうもピタゴラス数を生成する行列というのがあるらしい
+#      * http://www.geocities.jp/ikuro_kotaro/koramu/635_p.htm
+#      * http://www.amazon.co.jp/dp/4860641973/
 #
 
 # 結果の出力
