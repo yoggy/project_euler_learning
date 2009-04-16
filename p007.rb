@@ -2,6 +2,8 @@
 require 'pe_mylib'
 desc "10001番目の素数は何？"
 
+require 'prime_table'
+
 # mathnモジュールのPrimeクラスを使うと楽勝w
 require 'mathn'
 p = Prime.new
