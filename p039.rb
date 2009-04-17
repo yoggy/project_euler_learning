@@ -57,7 +57,7 @@ $m = Matrix[[-1,-2, 2],[-2,-1, 2],[-2,-2, 3]]
 # 初期値
 seed = [3,4,5]
 
-pp $m.mul([-3,4,5])
+#pp $m.mul([-3,4,5])
 
 def push_result(p)
   $ps << p
@@ -95,23 +95,23 @@ loop {
    }
 }
 
-pp ps
+ps2 = ps.dup
 
-# 既約ピタゴラス数だけしか作らないっぽいので
+# 既約ピタゴラス数だけしか作らないので
 # (da)**2 + (db)**2 = (dc)**2を計算する
 ps.each{|p|
   d = 2
   loop {
     pd = p.map{|a| a*d}
     break if pd.sum > 1000
-    ps << pd
+    ps2 << pd
     d += 1
   }
 }
 
 # pの集計を行う
 p_map = {}
-ps.each{|p|
+ps2.each{|p|
   s = p.sum
   p_map[s] = 0 unless p_map.key?(s)
   p_map[s] += 1
@@ -120,12 +120,13 @@ ps.each{|p|
 # 一番多いところを探す
 max = 0
 max_p = 0
-ps.each{|k,v|
+p_map.each{|k,v|
   if v > max
     max = v
     max_p = k
   end
 }
+
 
 # 結果の出力
 puts "result = #{max_p}"
