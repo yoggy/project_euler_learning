@@ -80,7 +80,7 @@ loop_flag = true
 while loop_flag
   pl = penta(l)
   j = l - 1
-  while j > l/2 
+  while j > 0
     pj = penta(j)
     pi = pl + pj
     #puts "i=#{get_n_from_penta(pi)}, j=#{j}, l=#{l}, pi=#{pi}, pj=#{pj}, pl=#{pl}"
