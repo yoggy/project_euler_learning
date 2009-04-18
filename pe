@@ -27,6 +27,7 @@ def pe_subcommand_generate(num_str)
   }
 
   File.chmod(0100755, filename)
+  system("git add #{filename}")
   STDERR.puts "generate #{filename} for problem #{n}..."
   
 end
