@@ -1,6 +1,8 @@
 #!/usr/bin/ruby
 require 'pe_mylib'
-desc ""
+desc "0〜9のpandigital数で部分文字列が2,3,5,7,11,13,17で割り切れる数の総和を求めよ。"
+
+# 問題の詳細はサイトを参照のことw
 
 def check(a)
   d8 = a[7,3].join.to_i
