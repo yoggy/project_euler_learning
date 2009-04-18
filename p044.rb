@@ -33,6 +33,14 @@ desc "5角数の数列から数を2つ取り出し、そのの和,差がまた5�
 #    ...
 #  逆順に列挙するのは、差が小さい順になると予想しての探索？？
 #
+#  この方法はダメ。i,jが1000を超えたあたりから遅くなりすぎる。。。
+#
+#  次に、先にDを想定して、そこから逆算する方法を考える
+#
+#  (1) 5画数のdを1つ決める。そのときd=p(l)とする
+#  (2) d - p(j) = p(l) - p(j) = p(i)であるかどうかをloopしてチェック。jはl-1から1までを探す
+#  (3) (2)が見つかったら、p(i)+p(j)=p(k)かどうかチェック
+#
 
 # indexとnをあわせるために、ダミーで先頭に0を入れておく
 $penta_table = [0, 1]
@@ -42,14 +50,21 @@ def penta(n)
   if $penta_table.size-1 < n
     ($penta_table.size-1..n).each{|i|
        $penta_table[i] = i * (3 * i - 1) / 2
-       $penta_hash[$penta_table[i]] = true
+       $penta_hash[$penta_table[i]] = i
     }
   end
   $penta_table[n]
 end
 
+def get_n_from_penta(p)
+  return -1 unless penta?(p)
+  $penta_hash[p]
+end
+
 def penta?(n)
   loop {
+    #pp n
+    #pp $penta_table
     # 配列のinclude?は遅いので、ハッシュを使って判定を早くする
     return $penta_hash.key?(n) if $penta_table.size-1 >= n
 
@@ -58,33 +73,30 @@ def penta?(n)
   }
 end
 
-i = 2
+l = 2
+pl = 0
+
 loop_flag = true
 while loop_flag
-  j = i - 1
-  while j > i/2   # あまり離れているところには無いと予想w
-    pi = penta i
-    pj = penta j
-    #puts "i=#{i},j=#{j},pi=#{pi},pj=#{pj}"
-    s = pi + pj
-    d = pi - pj
-
-    # 差の方はキャッシュに乗ってるはずなので、こっちの判定を先にした方が高速？
-    if penta? d
-      puts "hit!!!!! diff i=#{i},j=#{j},pi=#{pi},pj=#{pj}, diff=#{d}"
-      if penta? s
-        puts "hit!!!! sum i=#{i},j=#{j},pi=#{pi},pj=#{pj}, sum=#{s}"
-        loop_flag = false
-        break
+  pl = penta(l)
+  j = l - 1
+  while j > l/2 
+    pj = penta(j)
+    pi = pl + pj
+    #puts "i=#{get_n_from_penta(pi)}, j=#{j}, l=#{l}, pi=#{pi}, pj=#{pj}, pl=#{pl}"
+    if penta?(pi) && pi != pj
+      puts "hit!!! diff i=#{get_n_from_penta(pi)}, j=#{j}, l=#{l}, pi=#{pi}, pj=#{pj}, pl=#{pl}"
+      pk = pi + pj
+    if penta? pk
+      puts "hit!!! sum i=#{get_n_from_penta(pi)}, j=#{j}, k=#{get_n_from_penta(pk)}, pi=#{pi}, pj=#{pj}, pk=#{pk}"
+      loop_flag = false
+      break
       end
     end
     j -= 1
   end
-
-  i += 1
+  l += 1
 end
 
-
 # 結果の出力
-rv = "not implemented..."
-puts "result = #{rv}"
+puts "result = #{pl}"
