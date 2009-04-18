@@ -62,16 +62,18 @@ i = 2
 loop_flag = true
 while loop_flag
   j = i - 1
-  while j > 0
+  while j > i/2   # あまり離れているところには無いと予想w
     pi = penta i
     pj = penta j
     #puts "i=#{i},j=#{j},pi=#{pi},pj=#{pj}"
     s = pi + pj
-    if penta? s
-      puts "hit!! i=#{i},j=#{j},pi=#{pi},pj=#{pj}, sum=#{s}"
-      d = pi - pj
-      if penta? d
-        puts "hit!!!!!  i=#{i},j=#{j},pi=#{pi},pj=#{pj}, diff=#{d}"
+    d = pi - pj
+
+    # 差の方はキャッシュに乗ってるはずなので、こっちの判定を先にした方が高速？
+    if penta? d
+      puts "hit!!!!! diff i=#{i},j=#{j},pi=#{pi},pj=#{pj}, diff=#{d}"
+      if penta? s
+        puts "hit!!!! sum i=#{i},j=#{j},pi=#{pi},pj=#{pj}, sum=#{s}"
         loop_flag = false
         break
       end
