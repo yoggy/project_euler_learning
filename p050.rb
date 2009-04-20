@@ -1,8 +1,9 @@
 #!/usr/bin/ruby
 require 'pe_mylib'
-desc "100万未満の素数で、素数の和で表現できる素数のうち、一番長い項で表現される素数は何？"
+desc "100万未満の素数で、連続する素数の和で表現できる素数のうち、一番長い項で表現される素数は何？"
 
-# 例では1000未満の場合、953が21項で表現できると書いている
+# 例では100未満までのケース41 = 2 + 3 + 5 + 7 + 11 + 13と、
+# 1000未満の場合、953が21項で表現できると書いている
 
 # いつも考える攻略ポイント
 # 探索範囲
@@ -15,17 +16,12 @@ desc "100万未満の素数で、素数の和で表現できる素数のうち�
 # 効率
 #   素数自身が素数の和で表されるか？の判定を、どうやって効率よく判定するかを考える
 # 
+require 'prime_table'
 
-# 与えられた数が素数の和で表現できるかどうか？
+# 探索範囲の上限
+max_p = 1000
 
-#
-#
-#
-#require 'prime_table'
-
-max_p = 100
-
-# max_pまでの素数を集める
+# 先にmax_pまでの素数を集めておいて高速化
 prime = Prime.new
 $target_p = []
 loop {
@@ -34,42 +30,54 @@ loop {
   $target_p << p
 }
 
-# 0の時は表現できないケース
-def check(p, i)
-  puts "p=#{p}, target_p[#{i}]=#{$target_p[i]}"
-  loop {
-    d = p - $target_p[i]
-    return 1 if d == 0
-    next if d < 0
+# 与えられた素数を連続した素数の和に変換する関数
+def check(p, max_i)
+  max_length = 0
+  rv = []
 
-    child_t = check(d, i - 1)
-    if child_t > 0
-      return child_t + 1 if child_t > 0
-    end
-    i -= 1
-    return 0 if i < 0
-  }
+  start_i = 0
+  while start_i <= max_i
+    len = max_i - start_i + 1
+    hit_flag = false
+    (start_i..max_i).each{|end_i|
+      a = $target_p[start_i..end_i]
+      sum = a.sum
+
+      # 超えた場合はそれ以上探索しない
+      break if p < sum 
+
+      #
+      if p == sum
+        hit_flag = true
+        rv = a
+        #puts "  #{p} => #{a.pretty_inspect}"
+        break
+      end
+    }
+    break if hit_flag
+    start_i += 1
+  end
+  rv
 end
 
-pp check(41, $target_p.index(41) - 1)
-
-__END__
-
 # 順に探索
+max_a = []
 max_t = 0
+max_p = 0
+$target_p.each_with_index{|p, i|
+  a = check(p, i)
 
-target_p.each_with_index{|tp, i|
-  next if i == 0
+  if a.size >= max_t
+    max_t = a.size
+    max_a = a
+    max_p = p
+    puts "hit!!! #{p} => [#{a.join(',')}]"
+  end
 
-  max_pos = i - 1
-  t = check(tp, i-1)
-  next if t == 0
-
-  if t >= max_t
-    max_t = t
-    puts "hit!!! tp=#{tp}, t=#{t}"
+  if i % 10000 == 0
+    puts "i=#{i}"
   end
 }
 
 # 結果の出力
-puts "result = #{max_t}"
+puts "result = #{max_p}"
