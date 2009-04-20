@@ -8,7 +8,7 @@ total = 0
 }
 
 str = total.to_s
-last10 = strs[s.size - 10, 10]
+last10 = str[str.size - 10, 10]
 
 # 結果の出力
 puts "result = #{last10}"
