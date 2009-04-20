@@ -33,30 +33,31 @@ loop {
 # 与えられた素数を連続した素数の和に変換する関数
 def check(p, max_i)
   max_length = 0
-  rv = []
+  a = []
 
-  start_i = 0
-  while start_i <= max_i
-    len = max_i - start_i + 1
-    hit_flag = false
+  # 作戦
+  #   (1) 合計がpより多くなるまで数の小さい素数から足していく
+  #       この操作でもしpが一致したらhit!
+  #   (2) はみ出したら、小さい数からpをはみ出さないように切り捨てていく
+  #       この操作でもしpが一致したらhit!
+  #   (3) もしpより小さくなったときは(1)に戻る
 
-    total = 0
-    (start_i..max_i).each{|i|
-      total += $target_p[i]
+  si = 0
+  ei = 0
+  total = 2
 
-      # 超えた場合はそれ以上探索しない
-      break if p < total
-
-      if p == total
-        hit_flag = true
-        rv = i - start_i + 1 # 項の長さを求める
-        break
-      end
-    }
-    break if hit_flag
-    start_i += 1
-  end
-  rv
+  loop {
+    #puts "p=#{p}, si=#{si} => #{$target_p[si]}, ei=#{ei} => #{$target_p[ei]} total=#{total}"
+    if p == total
+      return ei - si + 1 #長さの範囲を返す
+    elsif p > total
+      ei += 1
+      total += $target_p[ei]
+    elsif p < total
+      total -= $target_p[si]
+      si += 1
+    end
+  }
 end
 
 # 順に探索
@@ -73,7 +74,7 @@ $target_p.each_with_index{|p, i|
   end
 
   if i % 10000 == 0
-    puts "i=#{i}"
+    puts "p=#{p}"
   end
 }
 
