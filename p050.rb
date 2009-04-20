@@ -19,7 +19,7 @@ desc "100万未満の素数で、連続する素数の和で表現できる素�
 require 'prime_table'
 
 # 探索範囲の上限
-max_p = 1000
+max_p = 1000000
 
 # 先にmax_pまでの素数を集めておいて高速化
 prime = Prime.new
@@ -39,18 +39,17 @@ def check(p, max_i)
   while start_i <= max_i
     len = max_i - start_i + 1
     hit_flag = false
-    (start_i..max_i).each{|end_i|
-      a = $target_p[start_i..end_i]
-      sum = a.sum
+
+    total = 0
+    (start_i..max_i).each{|i|
+      total += $target_p[i]
 
       # 超えた場合はそれ以上探索しない
-      break if p < sum 
+      break if p < total
 
-      #
-      if p == sum
+      if p == total
         hit_flag = true
-        rv = a
-        #puts "  #{p} => #{a.pretty_inspect}"
+        rv = i - start_i + 1 # 項の長さを求める
         break
       end
     }
@@ -65,13 +64,12 @@ max_a = []
 max_t = 0
 max_p = 0
 $target_p.each_with_index{|p, i|
-  a = check(p, i)
+  t = check(p, i)
 
-  if a.size >= max_t
-    max_t = a.size
-    max_a = a
+  if t >= max_t
+    max_t = t
     max_p = p
-    puts "hit!!! #{p} => [#{a.join(',')}]"
+    puts "hit!!! #{p} => #{max_t}"
   end
 
   if i % 10000 == 0
