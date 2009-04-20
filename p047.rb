@@ -22,7 +22,44 @@ desc "連続する4つの数を取り出し、それらの数の因数がすべ�
 #     初めに該当する数が見つかるまで
 #
 
+num = 4
+pos = 2
+
+loop_flag = true
+loop do
+  ns = (pos..pos + num-1).inject([]) {|r, n|
+    r << n
+  } 
+
+  # 因数判定
+  factors = {}
+  clean_flag = true
+  ns.each {|n|
+    # まず因数がnumと同じかどうかを判定
+    ps = n.prime_division
+    if ps.size != num
+      clean_flag = false 
+    end
+
+    # 次に同じ因数がないかどうかを判定
+    n.prime_division.each {|p|
+      f = p[0] * p[1]
+      clean_flag = false if factors.key?(f)
+      factors[f] = true
+    }
+  }
+
+  if clean_flag
+    puts "hit!!! pos=#{pos}"
+    break
+  end
+
+  pos += 1
+  if pos % 10000 == 0
+    puts "pos = #{pos}"
+  end
+end
+
 
 # 結果の出力
-rv = "not implemented..."
-puts "result = #{rv}"
+puts "result = #{pos}"
