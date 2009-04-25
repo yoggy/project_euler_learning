@@ -65,15 +65,15 @@ r_reg = [/0/, /1/, /2/]
 
 loop_flag = true
 while loop_flag
-  # デバッグ用表示
-  loop_count += 1
-  puts "loop_count = #{loop_count}" if loop_count%100 == 0
-
-  # for debug...
-  break if loop_count == 100
-
   p = prime.succ
   p_str = p.to_s
+
+  # デバッグ用表示
+  loop_count += 1
+  puts "loop_count = #{loop_count}, p=#{p}" if loop_count%1000 == 0
+
+  # for debug...
+  #break if loop_count == 100
 
   # 0,1,2を含まない数は対象外
   next unless p_str =~ /[012]/
@@ -89,7 +89,7 @@ while loop_flag
       next unless  replace_num.prime?
       count += 1
     }
-    puts "p=#{p}, r=#{r}, count=#{count}"
+    #puts "p=#{p}, r=#{r}, count=#{count}"
     if count == 8
       puts "hit !!! p=#{p}, r=#{r}, count=#{count}"
       loop_flag = false
