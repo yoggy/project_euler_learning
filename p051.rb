@@ -61,7 +61,7 @@ desc "素数の同じ部分を同じ数で置き換える事によって8つの�
 #
 # ここ以下にプログラム書く
 
-#require 'prime_table'
+require 'prime_table'
 
 prime = Prime.new
 tmp_count = 0
@@ -71,17 +71,17 @@ loop {
   p_str = p.to_s
 
   # 置き換え対象になる0,1,2を持っている数を探す
-  if p_str -~ /0/
+  if p_str =~ /0/
     (0..9).each{|n|
     }
   end
 
-  if p_str -~ /1/
+  if p_str =~ /1/
     (1..9).each{|n|
     }
   end
 
-  if p_str -~ /2/
+  if p_str =~ /2/
     (3..9).each{|n|
     }
   end
