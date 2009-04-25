@@ -30,10 +30,14 @@ unless File.exists?($prime_table_cache_file)
   fw.close
 end
 
-$prime_table = []
+$__prime_table = []
+$__prime_hash = {}
+
 open($prime_table_cache_file, "r") {|f|
   while str = f.gets
-    $prime_table << str.to_i
+    p = str.to_i
+    $__prime_table << p
+    $__prime_hash[p] = true
   end
 }
 
@@ -44,7 +48,12 @@ class Prime
 
   def succ
     @pos += 1
-    $prime_table[@pos]
+    $__prime_table[@pos]
   end
 end
 
+class Integer
+  def prime?
+    $__prime_hash.key?(self)
+  end
+end
