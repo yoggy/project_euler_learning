@@ -11,13 +11,6 @@ desc "素数の同じ部分を同じ数で置き換える事によって8つの�
 #   列挙 
 #     素数の列挙
 #     桁置き換えの列挙
-#     素数の列挙 {
-#       0,1,2を置き換えたパターン列挙 {
-#         素数判定
-#         count++
-#       }
-#       hit if count == 8
-#     }
 #
 #   効率?
 #     8つの素数が生成可能な数ということは、答えの数で置換可能な数字は
@@ -52,6 +45,7 @@ desc "素数の同じ部分を同じ数で置き換える事によって8つの�
 #   アルゴリズム
 #
 #     素数の列挙 {
+#       count = 1 # 現在の数も1とカウント
 #       0,1,2を置き換えたパターン列挙 {
 #         素数判定
 #         count++
@@ -61,35 +55,48 @@ desc "素数の同じ部分を同じ数で置き換える事によって8つの�
 #
 # ここ以下にプログラム書く
 
-require 'prime_table'
+#require 'prime_table'
 
 prime = Prime.new
-tmp_count = 0
+loop_count = 0
 p = 0
-loop {
+
+r_reg = [/0/, /1/, /2/]
+
+loop_flag = true
+while loop_flag
+  # デバッグ用表示
+  loop_count += 1
+  puts "loop_count = #{loop_count}" if loop_count%100 == 0
+
+  # for debug...
+  break if loop_count == 100
+
   p = prime.succ
   p_str = p.to_s
 
+  # 0,1,2を含まない数は対象外
+  next unless p_str =~ /[012]/
+
   # 置き換え対象になる0,1,2を持っている数を探す
-  if p_str =~ /0/
-    (0..9).each{|n|
+  [0, 1, 2].each{|r|
+    next unless p_str =~ r_reg[r]
+
+    # 置き換えて素数の個数をカウントしてみる
+    count = 1
+    (r+1..9).each{|n|
+      replace_num = p_str.gsub(r_reg[r], n.to_s).to_i
+      next unless  replace_num.prime?
+      count += 1
     }
-  end
-
-  if p_str =~ /1/
-    (1..9).each{|n|
-    }
-  end
-
-  if p_str =~ /2/
-    (3..9).each{|n|
-    }
-  end
-
-  tmp_count += 1
-  break if tmp_count == 10
-}
-
+    puts "p=#{p}, r=#{r}, count=#{count}"
+    if count == 8
+      puts "hit !!! p=#{p}, r=#{r}, count=#{count}"
+      loop_flag = false
+      break
+    end
+  }
+end
 
 # 結果の出力
 puts "result = #{p}"
