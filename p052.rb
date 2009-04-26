@@ -24,6 +24,8 @@ desc "xに対して2,3,4,5,6倍してもxと同じ数字を含む一番小さい
 #    新しい数が入ってくるから
 #
 
+# 問題の数を満たすかどうかのチェック関数
+#   引数は元の数の配列と何倍まで調べるか
 def check(src_a, max)
   src_i = src_a.join.to_i
   (2..max).each{|m|
@@ -44,11 +46,34 @@ def check(src_a, max)
 end
 
 # for test...
-pp check([1,2,5,8,7,4], 2) #true
-pp check([1,2,5,8,7,4], 3) #true
-pp check([1,2,5,8,7,5], 2) #false
+#pp check([1,2,5,8,7,4], 2) #true
+#pp check([1,2,5,8,7,4], 3) #false
+#pp check([1,2,5,8,7,5], 2) #false
+
+
+# 列挙
+#   先頭は必ず1と決め打ち。残りの桁の2〜0の組み合わせを調べる
+multiple_factor = 6
+rv = 0
+loop_count = 0
+break_flag = false
+(5..9).each{|d|
+  [2,3,4,5,6,7,8,9,0].choice_and_call(d) {|a|
+    a.unshift 1
+    if check(a, multiple_factor)
+      rv = a.join.to_i
+      puts "hit!!! rv=#{rv}"
+      break_flag = true
+      break
+    end
+
+    # デバッグ用進捗表示
+    loop_count += 1
+    puts "loop_count=#{loop_count} a=#{a.join}" if loop_count%10000 == 0
+  }
+  break if break_flag == true
+}
 
 
 # 結果の出力
-rv = "not implemented..."
 puts "result = #{rv}"
