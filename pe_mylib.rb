@@ -213,3 +213,19 @@ def cache_calc(key, use_cache=true, &block)
   rv
 end
 
+# ファイルを指定されたURLから取ってくる関数
+# 2回目以降はキャッシュを使用する
+def read_from(url)
+  filename = File.basename(url)
+
+  unless File.exist?(filename)
+    system("wget -O#{filename} #{url}")
+  end
+
+  text = ""
+  open(filename, 'r') {|f|
+    text = f.read
+  }
+  text
+end
+

@@ -112,5 +112,22 @@ class MyTestCase < Test::Unit::TestCase
   def test_integer_to_a
     assert_equal([1,2,3,4,5,6,7,8,9], 123456789.to_a)
   end
+
+  def test_read_from
+    system("rm -rf read_from_test.txt");
+    
+    url = "http://www.sabamiso.net/yoggy/read_from_test.txt"
+    original_str = "this is test file...\n"
+
+    # first test
+    str = read_from(url)
+    assert_equal(original_str, str)
+    
+    # second test(using cache file)
+    str = read_from(url)
+    assert_equal(original_str, str)
+    
+    system("rm -rf read_from_test.txt");
+  end
 end
 
