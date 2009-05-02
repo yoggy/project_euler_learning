@@ -155,6 +155,8 @@ module Hand
       }
     end
 
+    attr_reader :order, :hand_max, :other_max
+
     # とりあえず比較演算子はこれだけ実装w
     def >(other)
       # どちらの役が強いか判定
@@ -267,13 +269,76 @@ module Hand
     end
   end
 
+  class FullHouse < Base
+    def self.create(cs)
+      #3カードの判定
+      t = nil
+      [0,1,2,3,4].combination(3).each{|i,j,k|
+        if cs[i].num == cs[j].num && cs[j].num == cs[k].num
+          t = cs[i].num
+          break
+        end
+      }
+      return nil if t == nil
+
+      # 3カードの部分を取り除く
+      r = cs.inject([]) {|r, c|
+        if c.num == t
+          r
+        else
+          r << c
+        end 
+      }
+      if r[0].num == r[1].num
+        return FullHouse.new(cs, 6, t)
+      end
+      nil
+    end
+  end
+
+  class FourOfAKind < Base
+    def self.create(cs)
+      [0,1,2,3,4].combination(4).each{|i,j,k,l|
+        if cs[i].num == cs[j].num && cs[j].num == cs[k].num && cs[k].num == cs[l].num
+          return FourOfAKind.new(cs, 7, cs[i].num)
+        end
+      }
+      nil
+    end
+  end
+
+  class StraightFlush < Base
+    def self.create(cs)
+      h_flush = Flush.create(cs)
+      return nil if h_flush == nil
+      h_straight = Straight.create(cs)
+      return nil if h_straight == nil
+
+      StraightFlush.new(cs, 8, h_straight.hand_max)
+    end
+  end
+
+  class RoyalFlush < Base
+    def self.create(cs)
+      h_straight = Straight.create(cs)
+      return nil if h_straight == nil
+      return nil if h_straight.hand_max != 14 #Aが最後じゃないとRoyalFlushではない
+
+      h_flush = Flush.create(cs)
+      return nil if h_flush == nil
+
+      RoyalFlush.new(cs, 8, h_straight.hand_max)
+    end
+  end
+
   # 役クラスを作成するファクトリメソッド
   def create(cs)
+    # 順に評価して、ヒットしたものを採用
     create_proc = [
-      #Proc.new {|cs| RoyalFlush.create(cs)},
-      #Proc.new {|cs| StraightFlush.create(cs)},
-      #Proc.new {|cs| FourOfAKind.create(cs)},
-      #Proc.new {|cs| FullHouse.create(cs)},
+      Proc.new {|cs| RoyalFlush.create(cs)},
+      Proc.new {|cs| StraightFlush.create(cs)},
+      Proc.new {|cs| FourOfAKind.create(cs)},
+      Proc.new {|cs| FullHouse.create(cs)},
       Proc.new {|cs| Flush.create(cs)},
       Proc.new {|cs| Straight.create(cs)},
       Proc.new {|cs| ThreeOfAKind.create(cs)},
@@ -296,6 +361,7 @@ class Cards
     }
     @hand = Hand.create(@c)
   end
+  attr_reader :c, :hand
 
   def to_s
     "[" + @c.join(",") + "](#{@hand.to_s})"
@@ -306,22 +372,24 @@ end
 #
 # for test...
 #
-
 #%w[2 3 4 5 6 7 8 9 T J Q K A].each {|n|
 #  %w[S H D C].each {|s|
 #    pp Card.new(n+s).to_s
 #  }
 #}
-
-puts Cards.new(%w[4H 2C AS 7S QD]).to_s #hight card
-puts Cards.new(%w[5H 5C 6S 7S KD]).to_s #one pair
-puts Cards.new(%w[5H 5C 6S 7S 6D]).to_s #two pair
-puts Cards.new(%w[5H 5C 5S 7S 6D]).to_s #three of a kind
-puts Cards.new(%w[TH 7C 6S 9S 8D]).to_s #straight
-puts Cards.new(%w[3H 7H 6H 9H 8H]).to_s #straight
-puts p.to_s
-
-__END__
+#
+#puts Cards.new(%w[4H 2C AS 7S QD]).to_s #hight card
+#puts Cards.new(%w[5H 5C 6S 7S KD]).to_s #one pair
+#puts Cards.new(%w[5H 5C 6S 7S 6D]).to_s #two pair
+#puts Cards.new(%w[5H 5C 5S 7S 6D]).to_s #three of a kind
+#puts Cards.new(%w[TH 7C 6S 9S 8D]).to_s #straight
+#puts Cards.new(%w[3H 7H 6H 9H 8H]).to_s #flush
+#puts Cards.new(%w[4H 4S 4D AD AD]).to_s #full house
+#puts Cards.new(%w[5H 5C 5S 5D 6D]).to_s #four of a kind
+#puts Cards.new(%w[7H 9H 8H JH TH]).to_s #straight flush
+#puts Cards.new(%w[AH QH JH KH TH]).to_s #royal flush
+#
+#__END__
 
 #
 # main
@@ -335,9 +403,6 @@ text.each_line{|l|
   a = l.split(" ")
   p1 = Cards.new(a[0,5])
   p2 = Cards.new(a[5,5])
-
-  pp p1
-  pp p2
 
   if p1.hand > p2.hand
     count += 1
