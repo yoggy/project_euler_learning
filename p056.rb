@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'pe_mylib'
-desc ""
+desc "a,b<100の範囲でa**bの桁の合計が最大になる数は？桁の合計で答える"
 
 n = 100
 max = 0
