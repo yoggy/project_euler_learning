@@ -136,6 +136,7 @@ catch(:loop) {
                   if check([a,b,c,d])
                     ie = id + 1
                     if ie < ia
+                      puts "#{[a,b,c,d].pretty_inspect}"
                       loop {
                         e = prime_table[ie]
 
