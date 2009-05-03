@@ -53,34 +53,121 @@ desc "5つの素数の組み合わせの中から任意の2つの素数を取り
 #   5つの場合 -> 3, 7, 109, 673, ?
 #       :
 #       :
-# という感じで構成されているんじゃないか？ということで、まずは3つの場合を検証してみる
+# という感じで構成されているんじゃないか？ということで検証してみる
+# 
+# 1500万ぐらいまでの素数で検証してみたけど、5つの場合は
+# 3,7,109,673に何か数を加えた物ではないっぽい...
 #
+#   a = [3, 7, 109, 673]
+#   loop {
+#     p = prime.succ # 673の次から開始
+#     puts "hit!!" a.map{|n| join_prime?(n, p)}.inject(true) {|r,n| r && n}
+#   }
+# これで試してみたけど、1500万以下ではヒットしなかった。。
+#
+# 答えの5つの数をa,b,d,c,eとして、check([a,b,c,d,e])が判定用関数だとすると、少なくとも
+#
+#   check([a,b,c,d]) = true
+#   check([a,b,c])   = true
+#   check([a,b])     = true
+#   check([a])       = true   #何もくっつけない
+#
+# であるはず。ということは、3, 7, 109, 673ではない次の組み合わせを探す必要あり。
+# 良く考えたら「ダメだから次」という判断はどうやってするの？？
+#
+# 上限を決めて探索していくのはどうだろ？
+#   * a > e > d > c > bという条件をつける
+#   * aを決める
+#   * a以下のcheck([a,b])を満たすbをチョイス
+#     * bは小さい順から取得
+#   * b以下のcheck([a,b,c])を満たすcをチョイス
+#     * cはbよりも大きい一番小さな素数を選ぶ
+#        :
+#   * 無かったらaを次の素数に進める
+#  
 
 require 'prime_table'
 
 # 前と後ろに連結して、どちらも素数であるかどうかを判定する
-def join_prime?(n, p)
-  return false unless (n.to_s + p.to_s).to_i.prime?
-  return false unless (p.to_s + n.to_s).to_i.prime?
+def join_prime?(a, b)
+  return false unless (a.to_s + b.to_s).to_i.prime?
+  return false unless (b.to_s + a.to_s).to_i.prime?
   true
 end
 
-# 結果の出力
-a = [3, 7, 109, 673]
-prime = Prime.new
-loop {
-  p = prime.succ  
-  next if a.max >= p 
+# 入力された数字の配列が問題の条件を満たすかどうかチェックする関数
+def check(a)
+  return a.prime? if a.size == 1
+  a.combination(2).each{|a,b|
+    return false unless join_prime?(a,b)
+  }
+  true
+end
 
-  # あらかじめ求めてある結果と新たな素数との間で
-  # 任意の連結で素数になるかどうかチェック
-  r = a.map{|n| join_prime?(n, p)}.inject(true) {|r,n| r && n}
-  if r 
-    puts "hit!!! p=#{p}"
-    a << p
-    break
-  end
+# とりあえず素数を1000個用意
+prime_table = []
+prime = Prime.new
+1000.times {
+  prime_table << prime.succ
 }
-pp a
-puts "result = #{a.sum}"
+
+# 探索
+rv = []
+catch(:loop) {
+  (3..prime_table.size).each {|ia|
+    a = prime_table[ia]
+    ib = 0
+
+    loop {
+      b = prime_table[ib]
+
+      if check([a,b])
+        ic = ib + 1
+        if ic < ia
+          loop {
+            c = prime_table[ic]
+  
+            if check([a,b,c])
+              id = ic + 1
+              if id < ia
+                loop {
+                  d = prime_table[id]
+
+                  if check([a,b,c,d])
+                    ie = id + 1
+                    if ie < ia
+                      loop {
+                        e = prime_table[ie]
+
+                        if check([a,b,c,d,e])
+                          puts "hit!!! #{[a,b,c,d,e].pretty_inspect}"
+                          rv = [a,b,c,d,e]
+                          throw :loop
+                        end
+
+                        ie += 1
+                        break if ie == ia
+                      }
+                    end
+                  end
+
+                  id += 1   
+		          break if id == ia 
+                }
+              end
+            end
+          
+            ic += 1
+		    break if ic == ia 
+          }
+        end
+      end
+
+      ib += 1
+      break if ib == ia
+    }
+  }
+}
+
+puts "result = #{rv.sum}"
 
