@@ -104,10 +104,10 @@ def check(a)
   true
 end
 
-# とりあえず素数を1000個用意
+# とりあえず素数を10000個用意
 prime_table = []
 prime = Prime.new
-1000.times {
+10000.times {
   prime_table << prime.succ
 }
 
