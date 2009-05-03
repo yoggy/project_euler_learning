@@ -22,25 +22,50 @@ desc "ルート2を連分数で表現していく際、1000回までの近似操
 #       :
 # これで近似していけば1000回ぐらいは余裕？
 #
-# とりあえず189って出たけど正解じゃないみたい。
-# RubyのRationalクラスは約分するからダメなのか？
+# とりあえずRationalクラスを使って計算したら
+# 189って出たけど正解じゃないみたい。
+# RubyのRationalクラスは勝手に約分するからダメなのか？
+#
+# ということで自力で約分しない方法を考える。
+#
+# a0 = an0 / ad0とすると…
+#
+#   a1  = 1/(2 + an0/ad0)
+#       = ad0 / (ad0 * 2 + an0)
+#   an1 = ad0           # 分子
+#   ad1 = ad0 * 2 + an0 # 分母
+#
+#   A1  = 1 + a1
+#       = 1 + an1/ad1
+#       = (ad1 + an1) / ad1
+#   An1 = ad1 + an1
+#   Ad1 = ad1
+#
+# 約分せずに計算し続けるのが正解だった
 #
 
 limit = 1000
 count = 0
-a_pre = Rational(1, 2) #1回目の値
+an_pre = 1 #1回目の値
+ad_pre = 2
 
 (2..limit).each{|n|
-  a_now = Rational(1, 2 + a_pre)
-  sqrt2 = 1 + a_now 
-  puts "#{n} = #{sqrt2}"
+  an_now = ad_pre
+  ad_now = ad_pre * 2 + an_pre
 
-  if sqrt2.numerator.digit > sqrt2.denominator.digit
-    puts "hit!! n=#{n}, (#{sqrt2.numerator.digit}/#{sqrt2.denominator.digit}) #{sqrt2} (#{sqrt2.to_f})"
+  sqrt2_n = ad_now + an_now
+  sqrt2_d = ad_now
+
+  #puts "#{n} = #{sqrt2_n}/#{sqrt2_d}"
+
+  # 桁が大きくてlog10が使えないので、文字列の長さで桁数の比較をする
+  if sqrt2_n.to_s.size > sqrt2_d.to_s.size
+    puts "hit!! n=#{n}, (#{sqrt2_n.to_s.size}/#{sqrt2_d.to_s.size})"
     count += 1
   end
 
-  a_pre = a_now
+  an_pre = an_now
+  ad_pre = ad_now
 }
 
 puts "result = #{count}"
