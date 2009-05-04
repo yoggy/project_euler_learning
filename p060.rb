@@ -87,27 +87,28 @@ desc "5つの素数の組み合わせの中から任意の2つの素数を取り
 #  
 
 require 'prime_table'
+require 'openssl'
 
 # 前と後ろに連結して、どちらも素数であるかどうかを判定する
 def join_prime?(a, b)
-  return false unless (a.to_s + b.to_s).to_i.prime?
-  return false unless (b.to_s + a.to_s).to_i.prime?
+  return false unless OpenSSL::BN.new(a.to_s + b.to_s).prime?(0)
+  return false unless OpenSSL::BN.new(b.to_s + a.to_s).prime?(0)
   true
 end
 
 # 入力された数字の配列が問題の条件を満たすかどうかチェックする関数
 def check(a)
-  return a.prime? if a.size == 1
+  return OpenSSL::BN.new(a.to_s).prime?(0) if a.size == 1
   a.combination(2).each{|a,b|
     return false unless join_prime?(a,b)
   }
   true
 end
 
-# とりあえず素数を10000個用意
+# とりあえず素数を1000000個用意
 prime_table = []
 prime = Prime.new
-10000.times {
+1000000.times {
   prime_table << prime.succ
 }
 
