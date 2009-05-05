@@ -21,7 +21,7 @@ catch(:loop) {
       t2 = d.join.to_i
   
       #  1/3乗する
-      t3 = t2 ** (1/3)
+      t3 = t2 ** (1/3.0) #Rationalを指定すると1になってしまうので注意。。
       ti = t3.truncate
       tf = t3 - ti
   
