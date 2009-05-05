@@ -25,7 +25,7 @@ catch(:loop) {
       ti = t3.truncate
       tf = t3 - ti
   
-      if tf < 0.0001 && !a.include?(t2)
+      if tf == 0.0 && !a.include?(t2)
         count += 1
         a << t2
       end
