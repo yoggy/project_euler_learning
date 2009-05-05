@@ -3,7 +3,7 @@ require 'pe_mylib'
 # Find the smallest cube for which exactly five permutations of its digits are cube.
 desc ""
 
-n = 344
+n = 0
 hit_count = 5
 rv = nil
 
