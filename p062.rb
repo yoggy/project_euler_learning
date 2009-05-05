@@ -3,16 +3,15 @@ require 'pe_mylib'
 # Find the smallest cube for which exactly five permutations of its digits are cube.
 desc ""
 
-n = 0
-$rv = nil
+n = 344
+hit_count = 5
+rv = nil
 
 catch(:loop) {
   loop {
     n += 1
     t = n ** 3 
-    puts "n=#{n}, t=#{t}"
   
-    count = 0
     a = [t]
     t.to_a.choice_and_call {|d|
       next if d[0] == 0
@@ -22,24 +21,23 @@ catch(:loop) {
   
       #  1/3乗する
       t3 = t2 ** (1/3.0) #Rationalを指定すると1になってしまうので注意。。
-      ti = t3.truncate
-      tf = t3 - ti
+      ti = t3.round
+      tf = (t3 - ti).abs
   
-      if tf == 0.0 && !a.include?(t2)
-        count += 1
+      if tf < 0.000000001 && !a.include?(t2)
         a << t2
       end
     }
+    puts "n=#{n}, t=#{t}, count=#{a.size}"
   
-    # 自身を含むので-1しておく
-    if count == 2
-      puts "hit!!! a=#{a.pretty_inspect.chomp}"
-      $rv = t
+    if a.size == hit_count
+      puts "hit!!! n=#{n}, a=#{a.pretty_inspect.chomp}"
+      rv = t
       throw :loop
     end
   }
 }
 
 # 結果の出力
-puts "result = #{$rv}"
+puts "result = #{rv}"
 
